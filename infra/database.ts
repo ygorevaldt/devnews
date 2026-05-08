@@ -2,7 +2,7 @@ import { Client } from "pg";
 
 export const database = {
   query: async <T>(query: string, values: any[] = []): Promise<T[]> => {
-    let client: Client;
+    let client: Client | undefined;
 
     try {
       client = await getNewClient();
@@ -11,7 +11,9 @@ export const database = {
     } catch (error) {
       throw error;
     } finally {
-      await client!.end();
+      if (client) {
+        await client.end();
+      }
     }
   },
 };
