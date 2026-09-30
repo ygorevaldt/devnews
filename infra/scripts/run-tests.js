@@ -40,11 +40,16 @@ function isAppRunning() {
 }
 
 async function main() {
+  const args = process.argv.slice(2);
+  const coverage = args.includes("--coverage");
+
   const prepareStatus = run("npm run test:prepare");
 
   let testsStatus = 0;
   if (prepareStatus === 0) {
-    testsStatus = run("npm run test:run");
+    testsStatus = coverage
+      ? run(`npm run test:coverage`)
+      : run("npm run test:run");
   }
 
   let stopStatus = 0;
