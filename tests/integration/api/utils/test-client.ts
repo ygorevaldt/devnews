@@ -5,10 +5,12 @@ import supertest from "supertest";
 export function testClient(handler: NextApiHandler) {
   const server = createServer((request, response) => {
     const nextResponse = response as any;
+
     nextResponse.status = (statusCode: number) => {
       response.statusCode = statusCode;
       return nextResponse;
     };
+
     nextResponse.json = (body: unknown) => {
       if (!response.getHeader("content-type")) {
         response.setHeader("content-type", "application/json; charset=utf-8");
